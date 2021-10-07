@@ -20,18 +20,18 @@ public class Manager {
             statement.executeUpdate("drop table if exists shifts_confirmed");
 
             statement.executeUpdate("create table waiters(waiter_id INT, firstName String, lastName String)");
-            statement.executeUpdate("create table days(day_id INTEGER , day_name String)");
-            statement.executeUpdate("create table shifts_requests(id INTEGER PRIMARY KEY  , waiter_Id INTEGER, day_Id INTEGER ,FOREIGN KEY(waiter_id) REFERENCES waiter(id),  FOREIGN KEY (day_id) REFERENCES day(id))");
-            statement.executeUpdate("create table shifts_confirmed(id INTEGER PRIMARY KEY , waiter_Id INTEGER, day_Id INTEGER ,FOREIGN KEY(waiter_id) REFERENCES waiter(id),  FOREIGN KEY (day_id) REFERENCES day(id))");
+            statement.executeUpdate("create table days(day_name String)");
+            statement.executeUpdate("create table shifts_requests(id INTEGER PRIMARY KEY  , waiter_Id INTEGER, day_Id INTEGER, pending String ,FOREIGN KEY(id) REFERENCES waiter(id),  FOREIGN KEY (day_id) REFERENCES day(id))");
+
 
             String InsertWaiter = "INSERT INTO waiters(waiter_id,firstName,lastName) VALUES (?,?,?)";
-            String InsertMon = "INSERT INTO days(day_id,day_name) VALUES (01,'Mon')";
-            String InsertTue = "INSERT INTO days(day_id,day_name) VALUES (02,'Tue')";
-            String InsertWed = "INSERT INTO days(day_id,day_name) VALUES (03,'Wed')";
-            String InsertThu = "INSERT INTO days(day_id,day_name) VALUES (04,'Thu')";
-            String InsertFri = "INSERT INTO days(day_id,day_name) VALUES (05,'Fri')";
-            String InsertSat = "INSERT INTO days(day_id,day_name) VALUES (06,'Sat')";
-            String InsertSun = "INSERT INTO days(day_id,day_name) VALUES (07,'Sun')";
+            String InsertMon = "INSERT INTO days(day_name) VALUES ('Mon')";
+            String InsertTue = "INSERT INTO days(day_name) VALUES ('Tue')";
+            String InsertWed = "INSERT INTO days(day_name) VALUES ('Wed')";
+            String InsertThu = "INSERT INTO days(day_name) VALUES ('Thu')";
+            String InsertFri = "INSERT INTO days(day_name) VALUES ('Fri')";
+            String InsertSat = "INSERT INTO days(day_name) VALUES ('Sat')";
+            String InsertSun = "INSERT INTO days(day_name) VALUES ('Sun')";
             String InsertShifts = "INSERT INTO shifts_requests(waiter_id,day_id) VALUES (?,?)";
 
             PreparedStatement preparedStmtWaiters = connection.prepareStatement(InsertWaiter);
@@ -43,6 +43,14 @@ public class Manager {
             PreparedStatement preparedStmSat= connection.prepareStatement(InsertSat);
             PreparedStatement preparedStmSun = connection.prepareStatement(InsertSun);
             PreparedStatement preparedStmShifts = connection.prepareStatement(InsertShifts);
+            preparedStmMon.execute();
+            preparedStmTue.execute();
+            preparedStmWed.execute();
+            preparedStmThu.execute();
+            preparedStmFri.execute();
+            preparedStmSat.execute();
+            preparedStmSun.execute();
+
             for (int i=0;i < 8;i++) {
                 Faker faker = new Faker();
 
@@ -56,13 +64,6 @@ public class Manager {
                 preparedStmtWaiters.setString(3, lastName);
 
 
-                preparedStmMon.execute();
-                preparedStmTue.execute();
-                preparedStmWed.execute();
-                preparedStmThu.execute();
-                preparedStmFri.execute();
-                preparedStmSat.execute();
-                preparedStmSun.execute();
 
 
 
