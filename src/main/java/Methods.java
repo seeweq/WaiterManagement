@@ -1,6 +1,7 @@
 import com.github.javafaker.Faker;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Methods {
 
@@ -38,6 +39,7 @@ public class Methods {
             PreparedStatement preparedStmSun = connection.prepareStatement(InsertSun);
 
             preparedStmMon.execute();
+
             preparedStmTue.execute();
             preparedStmWed.execute();
             preparedStmThu.execute();
@@ -95,50 +97,50 @@ public class Methods {
 
     public void addRequest (String name, String [] days) {
         Connection connection = null;
-    try {
-        connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
 
-        final String NameID = "Select Waiter_id from waiters where firstName = ?";
-        PreparedStatement getNameID = connection.prepareStatement(NameID);
-        getNameID.setString(1, name);
-        ResultSet NameId = getNameID.executeQuery();
-        int nameId = NameId.getInt("waiter_id");
+            final String NameID = "Select Waiter_id from waiters where firstName = ?";
+            PreparedStatement getNameID = connection.prepareStatement(NameID);
+            getNameID.setString(1, name);
+            ResultSet NameId = getNameID.executeQuery();
+            int nameId = NameId.getInt("waiter_id");
 
-        for(int i = 0; i < days.length; i++){
+            for(int i = 0; i < days.length; i++){
 
-            final String DayID = "Select day_id from days where day_name = ?";
-            PreparedStatement getDayID = connection.prepareStatement(DayID);
-            getDayID.setString(1,days[i]);
-            ResultSet DayId = getDayID.executeQuery();
-            int dayId = DayId.getInt("day_id");
+                final String DayID = "Select day_id from days where day_name = ?";
+                PreparedStatement getDayID = connection.prepareStatement(DayID);
+                getDayID.setString(1,days[i]);
+                ResultSet DayId = getDayID.executeQuery();
+                int dayId = DayId.getInt("day_id");
 
-            if(limitCheck(dayId,connection)>=3){
-                System.err.println("reached day limit");
-            }else {
-                final String InsertRequest = "INSERT INTO shifts_requests(waiter_id,day_id) VALUES (?,?)";
-                PreparedStatement insertReq = connection.prepareStatement(InsertRequest);
-                insertReq.setString(1, String.valueOf(nameId));
-                insertReq.setString(2, String.valueOf(dayId));
-                insertReq.execute();
+                if(limitCheck(dayId,connection)>=3){
+                    System.err.println("reached day limit");
+                }else {
+                    final String InsertRequest = "INSERT INTO shifts_requests(waiter_id,day_id) VALUES (?,?)";
+                    PreparedStatement insertReq = connection.prepareStatement(InsertRequest);
+                    insertReq.setString(1, String.valueOf(nameId));
+                    insertReq.setString(2, String.valueOf(dayId));
+                    insertReq.execute();
+                }
             }
-        }
 
-    }catch(SQLException e){
-        System.err.println(e.getMessage());
-    }
-    finally
-    {
-        try
-        {
-            if(connection != null)
-                connection.close();
-        }
-        catch(SQLException e)
-        {
-            // connection close failed.
+        }catch(SQLException e){
             System.err.println(e.getMessage());
         }
-    }
+        finally
+        {
+            try
+            {
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException e)
+            {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
     }
 
     public int limitCheck(int id,Connection conn){
@@ -160,8 +162,40 @@ public class Methods {
         return total;
     }
 
-    public void accept () {
+    //    public void accept () {
+//
+//    }
+    public ArrayList<String> schedule(){
+        ArrayList<String> list = new ArrayList<>();
 
+        Connection connection = null;
+        try{
+            connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+            Statement statement1 = connection.createStatement();
+            Statement statement2 = connection.createStatement();
+            Statement statement3 = connection.createStatement();
+
+            String days = "select * from days";
+            String waiters= "select * from waiters";
+            String shifts = "select water_name where waiter_id value(?)";
+
+            ResultSet dayZ = statement1.executeQuery(days);
+            ResultSet waiterZ = statement2.executeQuery(waiters);
+            ResultSet requests = statement3.executeQuery(shifts);
+
+
+            for(int i =1;i<7;i++){
+                while (dayZ.next()){
+
+                }
+
+            }
+
+        }catch (SQLException e){
+            System.err.println(e.getMessage());
+        }
+
+        return list;
     }
 
 }

@@ -19,7 +19,7 @@ public class Manager {
             if(name == "stop"){
                 stop = false;
             }else{
-            app.addRequest(name, days);
+                app.addRequest(name, days);
             }
         }
     }
