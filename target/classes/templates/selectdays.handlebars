@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>Welcome waiter</h1>
+
+<form onsubmit="/home/sivu/WaiterManagement/src/main/resources/templates/selecteddays.handlebars" method="POST" action="/schedules">
+
+
+    <div>
+        <p>Select Name:</p>
+    <select id="waiter" name="waiter">
+        {{#each waiters}}
+        <option value="{{waiter}}">{{waiter}}</option>
+        {{/each}}
+    </select>
+    </div>
+
+
+
+
+    <p>Select 3 shift days:</p>
+
+    <div>
+        <div>
+
+                {{#each days}}
+
+                    <div>
+                        <input type="checkbox" name="day" id="mon" value="{{id}}"> <label for="mon">{{day}}</label>
+                    </div>
+                {{/each}}
+
+        </div>
+        <input type="submit" name="submit" value="Submit"/>
+    </div>
+</form>
+
+
+{{shifts}}
+
+
+
+</body>
+</html>
+

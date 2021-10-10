@@ -38,14 +38,30 @@
 
         <br />
 
-        <h2 class="text-center">HTML Table</h2>
-
+        <h2 class="text-center">Waiters Schedules</h2>
+        {{#each waiter}}
+        {{this}}
+        {{/each}}
         <div class="row">
             <table id="mainTable">
                 <tr>
                     {{#each days}}
-                    <th>{{days_name}}</th>
+                    <th>{{this}}</th>
                     {{/each}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--                    <th></th>-->
 
 
