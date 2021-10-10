@@ -96,7 +96,7 @@ public class Route {
                     mapToBean(Waiter.class);
 
             for(Day day:days){
-//                System.out.println(day.day_id);
+
 
                 handle.select("select id from days where id =?",day.day_id);
 
@@ -107,23 +107,13 @@ public class Route {
                 daysOfShift.addWaiter(aWaiter);
 
 
-               List<Shift> onDudy = handle.select("select waiter_id from shifts where day_id = ?",day.day_id)
-                       .mapToBean(Shift.class)
-                       .list();
+//               List<Shift> onDudy = handle.select("select waiter_id from shifts where day_id = ?",day.day_id)
+//                       .mapToBean(Shift.class)
+//                       .list();
 
-                System.out.println(onDudy);
+//                System.out.println(onDudy);
             }
 
-
-
-
-
-
-
-
-            // put it in the map which is passed to the template - the value will be merged into the template
-            //put the greet String on top in the greeting handlebars in html file
-//            map.put("" );
 
 
             return new ModelAndView(map, "selecteddays.handlebars");
