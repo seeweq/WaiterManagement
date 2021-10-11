@@ -28,132 +28,76 @@
     ></script>
 
     <link rel="stylesheet" href="CSS/style.css"/>
+
 </head>
+<style>
+    ul {
+    text-decoration : none;
+    list-style : none
+    }
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width:auto;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+</style>
 <body>
-<div class="container">
-    <div class="row">
-        <ul>
-            <li><a href="#home">home</a></li>
-        </ul>
 
-        <br />
+<!--        <ul>-->
+<!--            <li><a href="#home">home</a></li>-->
+<!--        </ul>-->
 
-        <h2 class="text-center">Waiters Schedules</h2>
-        {{#each waiter}}
-        {{this}}
-        {{/each}}
+
+
+    <div class="container">
+
         <div class="row">
+        <h2 class="text-center pt-4 my-4">Waiters Schedules</h2>
+
             <table id="mainTable">
                 <tr>
-                    {{#each days}}
-                    <th>{{this}}</th>
+                    {{#each Dayshift}}
+                    <th>{{weekName}}</th>
                     {{/each}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--                    <th></th>-->
-
-
-<!--                    <th>Tuesday</th>-->
-<!--                    <th>Wednesday</th>-->
-<!--                    <th>Thursday</th>-->
-<!--                    <th>Friday</th>-->
-<!--                    <th>Saturday</th>-->
-<!--                    <th>Sunday</th>th-->
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                    {{#each Dayshift}}
+                        <td>
+                            <ul>
+                                {{#each waiters}}
+                                    <li>{{this}}</li>
+                                            {{/each}}
+
+                                        </ul>
+                                    </td>
+                                {{/each}}
+                            </tr>
+
+                        </tr>
+
             </table>
-        </div>
 
-        <br />
 
-        <div class="row my-3 text-center">
-            <h3>The following day/s has too many waiters:</h3>
-        </div>
 
-        <br />
 
-        <div class="row my-3 text-center">
-            <h3>The following day/s has too little waiters:</h3>
-        </div>
-
-        <div class="row">
-            <div class="buttons text-center">
-                <button type="button" class="btn btn-primary">back</button>
-                <a href="request.html" class="btn btn-secondary active" role="button" aria-pressed="true">Requests</a>
             </div>
-        </div>
-    </div>
-</div>
+                        <div class="row btn text-center pt-4">
+
+                           <a class="btn btn-primary btn-lg" href="/schedules">back</a>
+
+                        </div>
+            </div>
+
 </body>
 </html>

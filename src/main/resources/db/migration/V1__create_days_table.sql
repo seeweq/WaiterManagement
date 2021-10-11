@@ -1,6 +1,7 @@
 create table if not exists days (
-id integer primary key AUTOINCREMENT,
-day text);
+    id integer primary key AUTOINCREMENT,
+    day texts
+);
 
 
 insert into days(day) values ('Monday');
@@ -10,3 +11,6 @@ insert into days (day) values ('Thursday');
 insert into days (day) values ('Friday');
 insert into days (day) values ('Saturday');
 insert into days (day) values ('Sunday');
+
+
+

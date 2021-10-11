@@ -1,6 +1,7 @@
 create table if not exists waiters (
-id integer primary key AUTOINCREMENT,
-waiter text);
+    id integer primary key AUTOINCREMENT,
+    waiter text
+);
 
 
 insert into waiters(waiter) values ('JOHNNY');

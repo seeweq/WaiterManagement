@@ -36,24 +36,7 @@ public class Route {
                .mapToBean(Waiter.class)
                 .list();
 
-//             handle.select("SELECT day, waiter,id FROM waiters INNER JOIN shifts on waiters.waiter_id = shift.day_id");
-//
-//
-//            List<Shift> shifts = new ArrayList<>();
-//
-//            for(Day day:days){
-//                System.out.println(day.id);
-//
-//                Shift daysOfShift = new Shift();
-//                shifts.add(new Shift());
-//                Waiter aWaiter = new Waiter();
-//                daysOfShift.addWaiter(aWaiter);
-//
-//
-//
-//            }
-//
-//            System.out.println(shifts);
+
 
 
            Map<String, Object> map = new HashMap<>();
@@ -64,18 +47,15 @@ public class Route {
         }, new HandlebarsTemplateEngine());
 
 
+
+
+
+
+
+
+
+
         post("/schedules", (request, response) -> {
-
-            Shift shift = new Shift();
-            Waiter aWaiter = new Waiter();
-
-            List<Day> days= handle.select("select id, day from days")
-                    .mapToBean(Day.class)
-                    .list();
-
-            List<Shift> sh = handle.select("select day from days inner join shifts on days.id = shifts.day_id")
-                    .mapToBean(Shift.class)
-                    .list();
 
             Map<String, Object> map = new HashMap<>();
 
@@ -85,48 +65,27 @@ public class Route {
             System.out.println(waiter);
             System.out.println(Arrays.toString(checkedDays));
 
+           Integer waiterId =  handle.select("select id from waiters where waiter = ?",waiter).mapTo(Integer.class).findOnly();
+            // get the waiter id
+            // loop over checked days
+                // insert the shift for each day and waiterid
 
-            for(int i=1 ; i <checkedDays.length;i++){
-             handle.createQuery("insert into shifts(day_id) values(?)");
 
+            for( String daysId : checkedDays){
+                handle.execute("insert into shifts(day_id, waiter_id) values(?,?)",daysId,waiterId);
             }
-           handle.select("select id from waiters where waiter = ?",waiter).mapToBean(Integer.class);
+
 
             map.put("waiter",waiter);
             map.put("day",checkedDays);
-            map.put("shifts",sh);
+
             // create the greeting message
 
 
 
-            List<Shift> shifts = new ArrayList<>();
-
-
-            List<Waiter> waiters = handle.select("select id, waiter from waiters where waiters.waiter =?",waiter)
-                    .mapToBean(Waiter.class)
-                    .list();
-
-            for(Day day:days){
-                id = handle.select("select id from waiters where id =?", day.id);
-
-
-                handle.select("select waiters.waiter FROM waiters INNER JOIN shifts ON waiters.id = waiter.day_.id");
-
-                Shift daysOfShift = new Shift();
-                shifts.add(shift);
-                daysOfShift.addWaiter(aWaiter);
-
-
-
-            }
-
-
-            System.out.println(shifts);
-
-
-
-
-
+//            List<Waiter> waiters = handle.select("select id, waiter from waiters where waiters.waiter =?",waiter)
+//                    .mapToBean(Waiter.class)
+//                    .list();
 
             // put it in the map which is passed to the template - the value will be merged into the template
             //put the greet String on top in the greeting handlebars in html file
@@ -136,6 +95,49 @@ public class Route {
             return new ModelAndView(map, "selecteddays.handlebars");
 
         }, new HandlebarsTemplateEngine());
+
+
+        get("/shifts", (req, res) -> {
+//            List<Shift> shifts = new ArrayList<>();
+
+
+            handle.select("select waiters.waiter FROM waiters INNER JOIN shifts ON waiter.day_.id = days.id");
+
+            List<Shift> allShifts = handle.select("select day_id, waiter_id, waiter, day  FROM shifts " +
+                    "inner join waiters on waiters.id = waiter_id  " +
+                    "inner join days on days.id = day_id").mapToBean(Shift.class).list();
+
+
+            String[] weekDays = {
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday"};
+
+            Map<String, DayShift> dayShiftMap = new HashMap<>();
+
+            for (String weekDay : weekDays) {
+                dayShiftMap.put(weekDay, new DayShift(weekDay));
+            }
+
+            for (Shift shift : allShifts) {
+                dayShiftMap.get(shift.getDay()).addWaiter(shift.getWaiter());
+            }
+
+            Collection<DayShift> shifts = dayShiftMap.values();
+
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("shifts", shifts);
+            map.put("Dayshift",shifts);
+
+
+            return new ModelAndView(map, "landing.handlebars");
+        }, new HandlebarsTemplateEngine());
+
 
 
     }
